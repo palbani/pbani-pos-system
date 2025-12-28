@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.DefaultSecurityFilterChain;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -21,10 +22,10 @@ public class SecurityConfig {
     //methods return value is a bean which can then be injected into other parts of your code with @Autowired
     //create and manage the SecurityFilterChain object
     @Bean
-    public HttpSecurity securityFilterChain(
+    public SecurityFilterChain securityFilterChain(
             HttpSecurity http) throws Exception {
 
-        DefaultSecurityFilterChain httpSecurity = http
+        return http
                 .sessionManagement(management ->
                         management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(Authorize ->
@@ -38,7 +39,6 @@ public class SecurityConfig {
                 .cors(
                         cors -> cors.configurationSource(corsConfigurationSource())
                     ).build();
-        return http;
     }
 
     private CorsConfigurationSource corsConfigurationSource() {
@@ -48,7 +48,7 @@ public class SecurityConfig {
                 CorsConfiguration cfg = new CorsConfiguration();
                 cfg.setAllowedOrigins(
                         Arrays.asList(
-                                "http://localhose:5173",
+                                "http://localhost:5173",
                                 "http://localhost:3000"
                         )
                 );
