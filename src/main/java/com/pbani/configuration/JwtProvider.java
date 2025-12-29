@@ -25,7 +25,7 @@ public class JwtProvider {
         Collection<? extends GrantedAuthority> authorities =
                 authentication.getAuthorities();
 
-        String roles = populateAuthorites(authorities);
+        String roles = populateAuthorities(authorities);
 
         return Jwts.builder()
                 .issuedAt(new Date())
@@ -47,7 +47,7 @@ public class JwtProvider {
         return String.valueOf(claims.get("email"));
     }
 
-    private String populateAuthorites(Collection<? extends GrantedAuthority> authorities) {
+    private String populateAuthorities(Collection<? extends GrantedAuthority> authorities) {
 
         Set<String> auths = new HashSet<>();
         for(GrantedAuthority authority : authorities) {
