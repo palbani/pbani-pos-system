@@ -1,9 +1,7 @@
 package com.pbani.model;
 
 import com.pbani.domain.UserRole;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
 
@@ -18,6 +16,7 @@ import java.time.LocalDateTime;
 public class User {
 
     @Id //primary key of table, unique identifier
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(nullable = false) // usernames cannot be null when a new user is created

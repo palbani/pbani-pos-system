@@ -22,13 +22,34 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 
 @Service
+
+
+
 @RequiredArgsConstructor //No need to annotate with autowire whatever instance we create here
 public class AuthServiceImpl implements AuthService {
 
-    private UserRepository userRepository;
+    //final mens fields must be assigned a value after constructor finishes
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
     private final CustomUserServiceImplementation customUserServiceImplementation;
+
+    /*
+    because we have @RequiredArgsConstructor at the top of AuthServiceImpl.java we are essentially implementing this constructor:
+            public AuthServiceImpl(UserRepository userRepository,
+                           PasswordEncoder passwordEncoder,
+                           JwtProvider jwtProvider, // <--- It's passed in here!
+                           CustomUserServiceImplementation customUserServiceImplementation) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtProvider = jwtProvider; // <--- And stored here!
+        this.customUserServiceImplementation = customUserServiceImplementation;
+
+        constructor constructs an instance of AuthServiceImpl
+    }
+
+
+    */
 
     @Override
     public AuthResponse register(UserDto userDto) throws UserException {
@@ -66,15 +87,18 @@ public class AuthServiceImpl implements AuthService {
         newUser.setCreatedAt(LocalDateTime.now());
         newUser.setUpdatedAt(LocalDateTime.now());
 
-        userRepository.save(newUser);
-
         User savedUser = userRepository.save(newUser);
+
+        if (savedUser == null) {
+            throw new UserException("Failed to save user to the database.");
+        }
 
         Authentication authentication =
                 new UsernamePasswordAuthenticationToken(userDto.getEmail(), userDto.getPassword());
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        //field used
         String jwt = jwtProvider.generateJwtToken(authentication);
 
         AuthResponse authResponse = new AuthResponse();

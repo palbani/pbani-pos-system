@@ -8,6 +8,8 @@ public class UserMapper {
     //method return type is UserDto and the method name is toDTO
     public static UserDto toDTO(User savedUser) {
         UserDto userDto = new UserDto();
+
+
         userDto.setId(savedUser.getId());
         userDto.setEmail(savedUser.getEmail());
         userDto.setRole(savedUser.getRole());
