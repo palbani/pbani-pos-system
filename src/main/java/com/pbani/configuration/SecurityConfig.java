@@ -33,7 +33,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(Authorize ->
                         Authorize.requestMatchers("/api/**").authenticated()
                                 .requestMatchers("/api/super-admin/**")
-                                .hasRole("Admin")
+                                .hasRole("ADMIN")
                                 .anyRequest().permitAll()
                 ).addFilterBefore(new JwtValidator(),
                         BasicAuthenticationFilter.class

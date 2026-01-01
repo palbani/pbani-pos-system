@@ -30,9 +30,8 @@ public class SecurityConfig {
                 .sessionManagement(management ->
                         management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(Authorize ->
-                        Authorize.requestMatchers("/api/**").authenticated()
-                                .requestMatchers("/api/super-admin/**")
-                                .hasRole("Admin")
+                        Authorize.requestMatchers("/api/super-admin/**").hasRole("ADMIN")
+                                .requestMatchers("/api/**").authenticated()
                                 .anyRequest().permitAll()
                 ).addFilterBefore(new JwtValidator(),
                         BasicAuthenticationFilter.class

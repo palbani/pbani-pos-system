@@ -18,6 +18,7 @@ public class UserController {
     //looks for a class with the @Servics or @Component annotation
     private final UserService userService;
 
+    //Get request in postman
     @GetMapping("/profile")
     public ResponseEntity<UserDto> getUserProfile(
            @RequestHeader("Authorization") String token
@@ -32,7 +33,7 @@ public class UserController {
             @RequestHeader("Authorization") String token,
             @PathVariable Long id
     ) throws UserException {
-        User user=userService.getUserFromJwtToken(token);
+        User user=userService.getUserById(id);
         return ResponseEntity.ok(UserMapper.toDTO(user));
     }
 }
