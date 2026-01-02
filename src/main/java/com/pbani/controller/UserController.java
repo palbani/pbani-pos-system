@@ -32,8 +32,8 @@ public class UserController {
     public ResponseEntity<UserDto> getUserById(
             @RequestHeader("Authorization") String token,
             @PathVariable Long id
-    ) throws UserException {
-        User user=userService.getUserById(id);
+    ) throws UserException, Exception {
+        User user=userService.getUserById (id);
         return ResponseEntity.ok(UserMapper.toDTO(user));
     }
 }
